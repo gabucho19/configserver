@@ -7,6 +7,9 @@ phases:
 
   build:
     commands:
+      - echo Build JAR
+      - mvn clean package -DskipTests
+      - echo Build Docker image
       - docker build -t configserver-repo .
 
   post_build:
