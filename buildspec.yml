@@ -1,8 +1,16 @@
-aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 137787521523.dkr.ecr.us-east-1.amazonaws.com
+version: 0.2
 
-docker build -t configserver-repo .
+phases:
+  pre_build:
+    commands:
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 137787521523.dkr.ecr.us-east-1.amazonaws.com
 
-docker tag configserver-repo:latest 137787521523.dkr.ecr.us-east-1.amazonaws.com/configserver-repo:latest
+  build:
+    commands:
+      - docker build -t configserver-repo .
 
-docker push 137787521523.dkr.ecr.us-east-1.amazonaws.com/configserver-repo:latest
+  post_build:
+    commands:
+      - docker tag configserver-repo:latest 137787521523.dkr.ecr.us-east-1.amazonaws.com/configserver-repo:latest
+      - docker push 137787521523.dkr.ecr.us-east-1.amazonaws.com/configserver-repo:latest
 
