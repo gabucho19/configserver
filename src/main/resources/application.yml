@@ -1,25 +1,25 @@
 app:
   security:
-    user: root
-    pass: s3cr3t
+    user: ${CONFIGSERVER_SERVER_SECURITY_USER:root}
+    pass: ${CONFIGSERVER_SERVER_SECURITY_PASS:s3cr3t}
 
 server:
-  port: 8888
+  port: ${CONFIGSERVER_SERVER_PORT:8888}
 
 spring:
   application:
     name: configserver
-  security:
-    user:
-      name: root
-      password: s3cr3t
+#  security:
+#    user:
+#      name: root
+#      password: s3cr3t
   profiles:
     active: jdbc
   datasource:
-    url: jdbc:postgresql://localhost:5432/configserver?currentSchema=configserver_dev
-    username: configserver_dev
-    password: configserver_dev
-    driver-class-name: org.postgresql.Driver
+    url: ${CONFIGSERVER_DB_URL:jdbc:postgresql://localhost:5432/configserver?currentSchema=configserver_dev}
+    username: ${CONFIGSERVER_DB_USER:configserver_dev}
+    password: ${CONFIGSERVER_DB_PASS:configserver_dev}
+    driver-class-name: ${CONFIGSERVER_DB_DRIVER:org.postgresql.Driver}
     # Configuracion de HikariCP
     hikari:
       maximum-pool-size: 10
@@ -35,7 +35,7 @@ spring:
           sql: SELECT "key", "value" FROM PROPERTIES WHERE "application"=? AND "profile"=? AND "label"=?
 management:
   server:
-    port: 9090
+    port: ${CONFIGSERVER_MANAGEMENT_PORT:9090}
   endpoints:
     web:
       base-path: /actuator
